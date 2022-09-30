@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "boonli-calendar"
+version = "0.1.0"
+description = "Exposes an API that returns the Boonli menus as an iCalendar"
+license = "Apache-2.0"
+authors = ["Allan Beaufour <allan@beaufour.dk>"]
+readme = "README.md"
+packages = [{ include = "boonli_calendar" }]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+crcmod = "^1.7"
+six = "^1.16.0"
+google-cloud-kms = "^2.12.1"
+functions-framework = "^3.2.0"
+boonli-api = "^0.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+flake8 = "^4.0.1"
+black = "^22.8.0"
+pre-commit = "^2.20.0"
+mypy = "^0.971"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''

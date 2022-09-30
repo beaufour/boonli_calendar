@@ -1,0 +1,17 @@
+*.pyc
+/*.egg
+/*.egg-info
+/.eggs/*
+/.DS_Store
+/build/
+/dist/
+/.venv/
+.mypy_cache
+__pycache__
+.pytest_cache
+.vscode
+.coverage
+terraform/terraform.tfstate*
+terraform/.terraform
+terraform/.terraform.tfstate.lock.info
+function-source.zip
