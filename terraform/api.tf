@@ -1,16 +1,10 @@
 #
-# Terraform config
+# Setup for the API endpoints
 #
-# There's also a 2nd gen Cloud Functions, but I've only had trouble with it.
-# Either because it's fairly new or because Terraform doesn't handle it well.
-# Or both...
+# Note: here's also a 2nd gen Cloud Functions, but I've only had trouble with
+# it. Either because it's fairly new or because Terraform doesn't handle it
+# well. Or both...
 #
-
-#######################################
-# Local variables
-locals {
-  domain_name = "api.${var.subdomain_name}.${data.google_dns_managed_zone.dns_zone.dns_name}"
-}
 
 
 #######################################
@@ -53,35 +47,48 @@ resource "google_compute_target_https_proxy" "default" {
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
-  name                  = "${var.project_name}-forwarding-rule"
+  name                  = "${var.project_name}-https-forwarding-rule"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   ip_address            = google_compute_global_address.default.id
   target                = google_compute_target_https_proxy.default.id
   port_range            = "443"
 }
 
-resource "google_compute_managed_ssl_certificate" "default" {
-  name = "${var.project_name}-certificate"
-  managed {
-    domains = [local.domain_name]
+
+#######################################
+# Load balancer HTTP -> HTTPS
+resource "google_compute_target_http_proxy" "http_redirect" {
+  name    = "${var.project_name}-https-redirect-proxy"
+  url_map = google_compute_url_map.http_redirect.id
+}
+
+resource "google_compute_url_map" "http_redirect" {
+  name = "${var.project_name}-https-redirect-url-map"
+  default_url_redirect {
+    https_redirect = true
+    strip_query    = false
   }
+}
+
+resource "google_compute_global_forwarding_rule" "http_redirect" {
+  name                  = "${var.project_name}-http-forwarding-rule"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  ip_address            = google_compute_global_address.default.id
+  target                = google_compute_target_http_proxy.http_redirect.id
+  port_range            = "80"
 }
 
 
 #######################################
 # DNS
 resource "google_dns_record_set" "default" {
-  name = local.domain_name
+  name = local.api_domain_name
   type = "A"
   ttl  = 300
 
   managed_zone = data.google_dns_managed_zone.dns_zone.name
 
   rrdatas = [google_compute_global_address.default.address]
-}
-
-data "google_dns_managed_zone" "dns_zone" {
-  name = var.dns_zone
 }
 
 
@@ -134,8 +141,8 @@ resource "google_cloudfunctions_function" "calendar" {
     KEY_NAME          = google_kms_crypto_key.default.name
   }
 
-  source_archive_bucket = google_storage_bucket.default.name
-  source_archive_object = google_storage_bucket_object.default.name
+  source_archive_bucket = google_storage_bucket.source.name
+  source_archive_object = google_storage_bucket_object.source.name
 }
 
 # Allows unauthenticated access to the function
@@ -163,8 +170,8 @@ resource "google_cloudfunctions_function" "encrypt" {
     KEY_NAME          = google_kms_crypto_key.default.name
   }
 
-  source_archive_bucket = google_storage_bucket.default.name
-  source_archive_object = google_storage_bucket_object.default.name
+  source_archive_bucket = google_storage_bucket.source.name
+  source_archive_object = google_storage_bucket_object.source.name
 }
 
 # Allows unauthenticated access to the function
@@ -179,14 +186,14 @@ resource "google_cloudfunctions_function_iam_member" "encrypt_invoker" {
 
 #######################################
 # Source code
-resource "google_storage_bucket" "default" {
+resource "google_storage_bucket" "source" {
   name                        = "${var.project_name}-function-source"
   location                    = "US"
   uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket_object" "default" {
+resource "google_storage_bucket_object" "source" {
   name   = "function-source-${filemd5("../function-source.zip")}.zip"
-  bucket = google_storage_bucket.default.name
+  bucket = google_storage_bucket.source.name
   source = "../function-source.zip"
 }
