@@ -26,7 +26,7 @@ resource "google_compute_region_network_endpoint_group" "default" {
   network_endpoint_type = "SERVERLESS"
 
   cloud_function {
-    function = google_cloudfunctions_function.calendar.name
+    url_mask = "/<function>"
   }
   region = var.region
 }
