@@ -139,7 +139,7 @@ resource "google_cloudfunctions_function" "calendar" {
 }
 
 # Allows unauthenticated access to the function
-resource "google_cloudfunctions_function_iam_member" "invoker" {
+resource "google_cloudfunctions_function_iam_member" "calendar_invoker" {
   project        = google_cloudfunctions_function.calendar.project
   region         = google_cloudfunctions_function.calendar.region
   cloud_function = google_cloudfunctions_function.calendar.name
@@ -148,6 +148,34 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   member = "allUsers"
 }
 
+resource "google_cloudfunctions_function" "encrypt" {
+  name         = "encrypt"
+  runtime      = "python39"
+  entry_point  = "encrypt"
+  trigger_http = true
+
+  service_account_email = google_service_account.default.email
+
+  environment_variables = {
+    PROJECT_NAME      = var.project_name
+    KEY_RING_LOCATION = google_kms_key_ring.default.location
+    KEY_RING_NAME     = google_kms_key_ring.default.name
+    KEY_NAME          = google_kms_crypto_key.default.name
+  }
+
+  source_archive_bucket = google_storage_bucket.default.name
+  source_archive_object = google_storage_bucket_object.default.name
+}
+
+# Allows unauthenticated access to the function
+resource "google_cloudfunctions_function_iam_member" "encrypt_invoker" {
+  project        = google_cloudfunctions_function.encrypt.project
+  region         = google_cloudfunctions_function.encrypt.region
+  cloud_function = google_cloudfunctions_function.encrypt.name
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "allUsers"
+}
 
 #######################################
 # Source code
