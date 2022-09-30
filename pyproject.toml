@@ -6,6 +6,7 @@ license = "Apache-2.0"
 authors = ["Allan Beaufour <allan@beaufour.dk>"]
 readme = "README.md"
 packages = [{ include = "boonli_calendar" }]
+repository = "https://github.com/beaufour/boonli_calendar"
 
 [tool.poetry.dependencies]
 python = "^3.7"
