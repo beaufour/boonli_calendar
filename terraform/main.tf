@@ -6,14 +6,12 @@
 # Or both...
 #
 
-provider "google" {
-  project = "boonli-menu"
-  region  = var.region
+#######################################
+# Local variables
+locals {
+  domain_name = "api.${var.subdomain_name}.${data.google_dns_managed_zone.dns_zone.dns_name}"
 }
 
-locals {
-  domain_name = "api.boonli.${data.google_dns_managed_zone.dns_zone.dns_name}"
-}
 
 #######################################
 # Load Balancer
@@ -69,6 +67,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
+
 #######################################
 # DNS
 resource "google_dns_record_set" "default" {
@@ -84,6 +83,7 @@ resource "google_dns_record_set" "default" {
 data "google_dns_managed_zone" "dns_zone" {
   name = var.dns_zone
 }
+
 
 #######################################
 # KMS
@@ -101,8 +101,24 @@ resource "google_kms_crypto_key" "default" {
   }
 }
 
+
 #######################################
-# Cloud Function
+# Service account
+resource "google_service_account" "default" {
+  account_id   = "${var.project_name}-service-account"
+  display_name = "Cloud Function Service Account"
+}
+
+# Gives the function access to the encryption/decryption key
+resource "google_kms_crypto_key_iam_member" "crypto_key" {
+  crypto_key_id = google_kms_crypto_key.default.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:${google_service_account.default.email}"
+}
+
+
+#######################################
+# Cloud Functions
 resource "google_cloudfunctions_function" "calendar" {
   name         = "calendar"
   runtime      = "python39"
@@ -122,11 +138,6 @@ resource "google_cloudfunctions_function" "calendar" {
   source_archive_object = google_storage_bucket_object.default.name
 }
 
-resource "google_service_account" "default" {
-  account_id   = "${var.project_name}-service-account"
-  display_name = "Cloud Function Service Account"
-}
-
 # Allows unauthenticated access to the function
 resource "google_cloudfunctions_function_iam_member" "invoker" {
   project        = google_cloudfunctions_function.calendar.project
@@ -137,13 +148,9 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   member = "allUsers"
 }
 
-# Gives the function access to the encryption/decryption key
-resource "google_kms_crypto_key_iam_member" "crypto_key" {
-  crypto_key_id = google_kms_crypto_key.default.id
-  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:${google_service_account.default.email}"
-}
 
+#######################################
+# Source code
 resource "google_storage_bucket" "default" {
   name                        = "${var.project_name}-function-source"
   location                    = "US"
