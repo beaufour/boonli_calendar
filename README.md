@@ -45,3 +45,7 @@ and the `encrypt` function with:
 That will start them on port 8080 and 8081 respectively.
 
 You can spin up a local nginx server with
+
+    > nginx -c nginx.conf -p .
+
+And then hit <http://localhost:8000/>.
