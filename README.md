@@ -24,7 +24,7 @@ And then run Terraform:
 
 * Enable the necessary APIs [here](https://console.cloud.google.com/apis/enableflow?apiid=compute.googleapis.com,oslogin.googleapis.com,dns.googleapis.com,cloudkms.googleapis.com,cloudfunctions.googleapis.com,cloudbuild.googleapis.com)
 * Supply credentials (Terraform will give you the instructions if needed)
-* Edit `terraform/variables.tf` so they match your setup (and potentially `terraform/main.tf` too)
+* Edit `terraform/variables.tf` so they match your setup
 * Run `terraform init`
 * Run `terraform apply`
 
