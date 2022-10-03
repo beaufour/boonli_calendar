@@ -15,10 +15,11 @@ def encrypt(request: Request) -> Response:
     """Exposes an encryption function that encrypts the parameters to a string
     that can be understood by the `calendar` endpoint as the `eid`
     parameter."""
+    args = request.form if request.method == "POST" else request.args
     data = {
-        "username": request.args.get("username"),
-        "password": request.args.get("password"),
-        "customer_id": request.args.get("customer_id"),
+        "username": args.get("username"),
+        "password": args.get("password"),
+        "customer_id": args.get("customer_id"),
     }
 
     for key in ["username", "password", "customer_id"]:
