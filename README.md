@@ -30,6 +30,8 @@ And then run Terraform:
 
 Note that it seems like, the Terraform Google Cloud provider doesn't quite understand the dependencies on the Network Endpoint Group, so if you change that you'll have to remove all the whole setup and reapply manually (or I have a bug in the Terraform code...).
 
+You will need your own domain to host it on. The domain you use needs to be specified in `terraform/variables.tf` and `boonli_calendar/encrypt.py`.
+
 ## Local Development
 
 You can run the `calendar` function with:

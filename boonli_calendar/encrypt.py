@@ -9,12 +9,26 @@ from flask.wrappers import Request, Response
 
 from boonli_calendar.crypto import encrypt_symmetric
 
+# The domain the web site is hosted on
+WEB_DOMAIN = "https://boonli.vovhund.com"
+
 
 @functions_framework.http
 def encrypt(request: Request) -> Response:
     """Exposes an encryption function that encrypts the parameters to a string
     that can be understood by the `calendar` endpoint as the `eid`
     parameter."""
+
+    headers = {
+        "Access-Control-Allow-Origin": WEB_DOMAIN,
+        "Access-Control-Allow-Methods": "GET, POST",
+    }
+
+    if request.method == "OPTIONS":
+        # CORS Pre-flight handling
+        # headers["Access-Control-Max-Age"] = "3600"
+        return Response("", status=204, headers=headers)
+
     args = request.form if request.method == "POST" else request.args
     data = {
         "username": args.get("username"),
@@ -30,4 +44,6 @@ def encrypt(request: Request) -> Response:
     encrypted = encrypt_symmetric(url_string)
     ret = {"eid": b64encode(encrypted).decode("ascii")}
 
-    return jsonify(ret)
+    response = jsonify(ret)
+    response.headers.extend(headers)
+    return response
