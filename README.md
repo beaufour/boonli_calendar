@@ -2,12 +2,6 @@
 
 This project uses the Boonli API to expose an API that returns the Boonli menu chosen as an iCalendar.
 
-## Local development
-
-You can run the function locally with:
-
-    > ./local_run.sh
-
 ## Deploying
 
 You can deploy the calendar Cloud Function like this:
@@ -35,3 +29,17 @@ And then run Terraform:
 * Run `terraform apply`
 
 Note that it seems like, the Terraform Google Cloud provider doesn't quite understand the dependencies on the Network Endpoint Group, so if you change that you'll have to remove all the whole setup and reapply manually (or I have a bug in the Terraform code...).
+
+## Local Development
+
+You can run the `calendar` function with:
+
+    > ./local_run.sh
+
+and the `encrypt` function with:
+
+    > ./local_run.sh encrypt
+
+That will start them on port 8080 and 8081 respectively.
+
+You can spin up a local nginx server with
