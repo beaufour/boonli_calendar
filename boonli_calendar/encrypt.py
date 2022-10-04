@@ -39,7 +39,10 @@ def encrypt(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not data.get(key):
-            raise Exception(f"Missing a required parameter: {key}")
+            data = {"error": {"message": f"Missing a required parameter: {key}"}}
+            response = jsonify(data)
+            response.status_code = 500
+            return response
 
     url_string = urlencode(data)
     encrypted = encrypt_symmetric(url_string)
