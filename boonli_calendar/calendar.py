@@ -51,7 +51,7 @@ def calendar(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not args.get(key):
-            raise Exception(f"Missing a required parameter: {key}")
+            return Response(f"Missing a required parameter: {key}", status=500)
 
     api = BoonliAPI()
     api.login(args["customer_id"], args["username"], args["password"])
