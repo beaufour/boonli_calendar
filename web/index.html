@@ -23,7 +23,7 @@
 
             <p class="fs-5 col-md-8">
                 Since Boonli does not have an API, we sadly need your password. We will not store your login information
-                anywhere. It will only be used to generate an encrypted URL for the service to use.
+                anywhere! We wil encrypt the information in the URL. The key is stored securely in Google Cloud.
             </p>
 
             <form class="fs-5 col-md-8 needs-validation" onsubmit="handleSubmit(event, this)">
@@ -49,6 +49,11 @@
                 Calendar URL:
                 <input id="calendarUrl" type="text" class="form-control" readonly="true" />
             </div>
+
+            <footer class="pt-5 my-5 text-muted border-top">
+                See <a href="https://github.com/beaufour/boonli_calendar">here</a> for more information about this
+                project.
+            </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
