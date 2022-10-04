@@ -24,9 +24,10 @@ def encrypt(request: Request) -> Response:
         "Access-Control-Allow-Methods": "GET, POST",
     }
 
+    # CORS Pre-flight handling
     if request.method == "OPTIONS":
-        # CORS Pre-flight handling
-        # headers["Access-Control-Max-Age"] = "3600"
+        # Cache for 1 hour
+        headers["Access-Control-Max-Age"] = "3600"
         return Response("", status=204, headers=headers)
 
     args = request.form if request.method == "POST" else request.args
