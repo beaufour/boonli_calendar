@@ -42,6 +42,7 @@ def encrypt(request: Request) -> Response:
             data = {"error": {"message": f"Missing a required parameter: {key}"}}
             response = jsonify(data)
             response.status_code = 500
+            response.headers.extend(headers)
             return response
 
     url_string = urlencode(data)
