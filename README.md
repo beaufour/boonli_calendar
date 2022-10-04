@@ -1,6 +1,8 @@
 # Boonli Calendar
 
-This project uses the Boonli API to expose an API that returns the Boonli menu chosen as an iCalendar.
+This project uses the [Boonli API](https://github.com/beaufour/boonli_api) to expose a URL that returns the Boonli menu chosen as an iCalendar. You can subscribe to this calendar in your calendar app (Google Calendar, Apple Calendar, etc)
+
+The project is deployed here: <https://boonli.vovhund.com/>
 
 ## Deploying
 
