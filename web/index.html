@@ -45,9 +45,24 @@
             <div id="alert" class="alert alert-danger" style="margin-top: 25px; display: none" role="alert">
             </div>
 
-            <div class="fs-5 col-md-8" style="margin-top: 25px">
+            <div class="fs-5 col-md-8 mt-5">
                 Calendar URL:
                 <input id="calendarUrl" type="text" class="form-control" readonly="true" />
+            </div>
+
+            <div class="fs-5 col-md-8 mt-5">
+                Note that Google Calendar has some kind of bug where it won't let you add the url. I'm unsure about
+                why, but if you shorten the url through a url shortener like <a href="http://bitly.com/">Bitly</a>
+                it'll work.
+            </div>
+
+            <div class="fs-5 col-md-8 mt-5">
+                <div id="spinner" style="display: none">
+                    Loading calendar data
+                    <div id="spinner" class="spinner-border text-info" role="status">
+                    </div>
+                </div>
+                <pre id="output" style="display: none"></pre>
             </div>
 
             <footer class="pt-5 my-5 text-muted border-top">
@@ -80,6 +95,37 @@
             elem.textContent = message
         }
 
+        async function handleErrors(response) {
+            if (!response.ok) {
+                throw Error(await response.text());
+            }
+            return response;
+        }
+
+        function showCalendar(url) {
+            var spinner = document.getElementById("spinner")
+            var output = document.getElementById("output");
+
+            spinner.style.display = "block";
+            url.searchParams.set("fmt", "json");
+            fetch(url).then(handleErrors)
+                .then((response) => response.json())
+                .then((data => {
+                    var text = "";
+                    for (const menu of data) {
+                        text += menu["day"] + " " + menu["menu"] + "\n";
+                    }
+                    output.textContent = text;
+                    output.style.display = "block";
+                    spinner.style.display = "none";
+                })).catch((error) => {
+                    output.textContent = error;
+                    output.style.display = "block";
+                    spinner.style.display = "none";
+                    console.error("error showing calendar:", error);
+                });
+        }
+
         function handleSubmit(event, form) {
             event.preventDefault();
 
@@ -104,6 +150,8 @@
                     input.value = url.toString();
                     input.focus()
                     input.select();
+
+                    showCalendar(url);
                 })
                 .catch((error) => {
                     display_alert("Error on API call: " + error);

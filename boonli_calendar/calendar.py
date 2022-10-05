@@ -5,9 +5,10 @@ from datetime import date, timedelta
 from urllib.parse import parse_qs
 
 import functions_framework
-from boonli_api.api import BoonliAPI
+from boonli_api.api import BoonliAPI, LoginError
 from boonli_api.utils import menus_to_ical
 from dateutil.relativedelta import MO, relativedelta
+from flask import jsonify
 from flask.wrappers import Request, Response
 
 from boonli_calendar.crypto import decrypt_symmetric
@@ -54,7 +55,12 @@ def calendar(request: Request) -> Response:
             return Response(f"Missing a required parameter: {key}", status=500)
 
     api = BoonliAPI()
-    api.login(args["customer_id"], args["username"], args["password"])
+    try:
+        api.login(args["customer_id"], args["username"], args["password"])
+    except LoginError as ex:
+        return Response(f"Could not login to Boonli API: {ex}", status=500)
+    except Exception as ex:
+        return Response(f"Error logging in to Boonli API: {ex}", status=500)
 
     day = date.today()
     sequence_num = day.toordinal()
@@ -64,7 +70,14 @@ def calendar(request: Request) -> Response:
     if day.weekday() != MO:
         day = day + relativedelta(weekday=MO(-1))
     day -= timedelta(days=7)
-    menus = api.get_range(day, 21)
+    try:
+        menus = api.get_range(day, 21)
+    except Exception as ex:
+        return Response(f"Could not get menus from Boonli API: {ex}", status=500)
+
+    if request.args.get("fmt") == "json":
+        data = [{"day": menu["day"].isoformat(), "menu": menu["menu"]} for menu in menus]
+        return jsonify(data)
 
     # we set the sequence number to the current day as a hack, because without
     # storing anything we don't know if anything has changed. that way it

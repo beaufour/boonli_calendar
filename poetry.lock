@@ -60,7 +60,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boonli-api"
-version = "0.1.0"
+version = "0.1.1"
 description = "API allowing you to fecth menus from boonli.com"
 category = "main"
 optional = false
@@ -282,7 +282,7 @@ reauth = ["pyu2f (>=0.1.5)"]
 
 [[package]]
 name = "google-cloud-kms"
-version = "2.12.1"
+version = "2.12.2"
 description = "Cloud Key Management Service (KMS) API client library"
 category = "main"
 optional = false
@@ -292,7 +292,7 @@ python-versions = ">=3.7"
 google-api-core = {version = ">=1.32.0,<2.0.0 || >=2.8.0,<3.0.0dev", extras = ["grpc"]}
 grpc-google-iam-v1 = ">=0.12.4,<1.0.0dev"
 proto-plus = ">=1.22.0,<2.0.0dev"
-protobuf = ">=3.19.0,<5.0.0dev"
+protobuf = ">=3.20.2,<5.0.0dev"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
@@ -382,7 +382,7 @@ pytz = "*"
 
 [[package]]
 name = "identify"
-version = "2.5.5"
+version = "2.5.6"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -591,7 +591,7 @@ testing = ["google-api-core[grpc] (>=1.31.5)"]
 
 [[package]]
 name = "protobuf"
-version = "4.21.6"
+version = "4.21.7"
 description = ""
 category = "main"
 optional = false
@@ -687,7 +687,7 @@ six = ">=1.5"
 
 [[package]]
 name = "pytz"
-version = "2022.2.1"
+version = "2022.4"
 description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
@@ -743,14 +743,14 @@ pyasn1 = ">=0.1.3"
 
 [[package]]
 name = "setuptools"
-version = "65.4.0"
+version = "65.4.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mock", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
@@ -881,7 +881,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "c6033b5bc3a37fa43b6db64ee6c211bf6d120dd26da902145fd61998301dad77"
+content-hash = "8d2daee7207d3e2786e2350c03cedf088520fdfb91ddd4459ef57f3e0e4414c2"
 
 [metadata.files]
 atomicwrites = [
@@ -921,8 +921,8 @@ black = [
     {file = "black-22.8.0.tar.gz", hash = "sha256:792f7eb540ba9a17e8656538701d3eb1afcb134e3b45b71f20b25c77a8db7e6e"},
 ]
 boonli-api = [
-    {file = "boonli-api-0.1.0.tar.gz", hash = "sha256:ca3ad247c7fabca0f5ef966dee56624632724f1e42f70930fc754cbb84113dd3"},
-    {file = "boonli_api-0.1.0-py3-none-any.whl", hash = "sha256:57db756825be81cc45c68d6b33d20439b64f87f62f964133859c09f3197efe49"},
+    {file = "boonli-api-0.1.1.tar.gz", hash = "sha256:b887fcf2017a297344d356bd6a55f973c3b363277ff1a2f81cab11602cccb8ba"},
+    {file = "boonli_api-0.1.1-py3-none-any.whl", hash = "sha256:a3922671981dc1bfcf34aa9480799dac34287b9bb39cac0950c1b16d817617b1"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -991,8 +991,8 @@ google-auth = [
     {file = "google_auth-2.12.0-py2.py3-none-any.whl", hash = "sha256:98f601773978c969e1769f97265e732a81a8e598da3263895023958d456ee625"},
 ]
 google-cloud-kms = [
-    {file = "google-cloud-kms-2.12.1.tar.gz", hash = "sha256:035b0876435d2b82fa81bdd5040a6e289ef527937626ae3791c0fc0e91d4f7d1"},
-    {file = "google_cloud_kms-2.12.1-py2.py3-none-any.whl", hash = "sha256:1715493c91b2693ae317dcd71a5a6696a4543a47451a0fc12a805e0cee6e1c43"},
+    {file = "google-cloud-kms-2.12.2.tar.gz", hash = "sha256:eddb1254cf9e552272fc9ab00c7906ccf6f276727cb8be137422694e111b5c6a"},
+    {file = "google_cloud_kms-2.12.2-py2.py3-none-any.whl", hash = "sha256:886f11daefe7f7a4a5b3130b3eb2b2f10b6979054e4a39c26e06b1718ee67453"},
 ]
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.56.4.tar.gz", hash = "sha256:c25873c47279387cfdcbdafa36149887901d36202cb645a0e4f29686bf6e4417"},
@@ -1062,8 +1062,8 @@ icalendar = [
     {file = "icalendar-4.1.0.tar.gz", hash = "sha256:9748b7c02efcc43e58d0615ae0976ac4f265e90dadee9b4f884de29905c1b395"},
 ]
 identify = [
-    {file = "identify-2.5.5-py2.py3-none-any.whl", hash = "sha256:ef78c0d96098a3b5fe7720be4a97e73f439af7cf088ebf47b620aeaa10fadf97"},
-    {file = "identify-2.5.5.tar.gz", hash = "sha256:322a5699daecf7c6fd60e68852f36f2ecbb6a36ff6e6e973e0d2bb6fca203ee6"},
+    {file = "identify-2.5.6-py2.py3-none-any.whl", hash = "sha256:b276db7ec52d7e89f5bc4653380e33054ddc803d25875952ad90b0f012cbcdaa"},
+    {file = "identify-2.5.6.tar.gz", hash = "sha256:6c32dbd747aa4ceee1df33f25fed0b0f6e0d65721b15bd151307ff7056d50245"},
 ]
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
@@ -1261,20 +1261,20 @@ proto-plus = [
     {file = "proto_plus-1.22.1-py3-none-any.whl", hash = "sha256:ea8982669a23c379f74495bc48e3dcb47c822c484ce8ee1d1d7beb339d4e34c5"},
 ]
 protobuf = [
-    {file = "protobuf-4.21.6-cp310-abi3-win32.whl", hash = "sha256:49f88d56a9180dbb7f6199c920f5bb5c1dd0172f672983bb281298d57c2ac8eb"},
-    {file = "protobuf-4.21.6-cp310-abi3-win_amd64.whl", hash = "sha256:7a6cc8842257265bdfd6b74d088b829e44bcac3cca234c5fdd6052730017b9ea"},
-    {file = "protobuf-4.21.6-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:ba596b9ffb85c909fcfe1b1a23136224ed678af3faf9912d3fa483d5f9813c4e"},
-    {file = "protobuf-4.21.6-cp37-abi3-manylinux2014_aarch64.whl", hash = "sha256:4143513c766db85b9d7c18dbf8339673c8a290131b2a0fe73855ab20770f72b0"},
-    {file = "protobuf-4.21.6-cp37-abi3-manylinux2014_x86_64.whl", hash = "sha256:b6cea204865595a92a7b240e4b65bcaaca3ad5d2ce25d9db3756eba06041138e"},
-    {file = "protobuf-4.21.6-cp37-cp37m-win32.whl", hash = "sha256:9666da97129138585b26afcb63ad4887f602e169cafe754a8258541c553b8b5d"},
-    {file = "protobuf-4.21.6-cp37-cp37m-win_amd64.whl", hash = "sha256:308173d3e5a3528787bb8c93abea81d5a950bdce62840d9760effc84127fb39c"},
-    {file = "protobuf-4.21.6-cp38-cp38-win32.whl", hash = "sha256:aa29113ec901281f29d9d27b01193407a98aa9658b8a777b0325e6d97149f5ce"},
-    {file = "protobuf-4.21.6-cp38-cp38-win_amd64.whl", hash = "sha256:8f9e60f7d44592c66e7b332b6a7b4b6e8d8b889393c79dbc3a91f815118f8eac"},
-    {file = "protobuf-4.21.6-cp39-cp39-win32.whl", hash = "sha256:80e6540381080715fddac12690ee42d087d0d17395f8d0078dfd6f1181e7be4c"},
-    {file = "protobuf-4.21.6-cp39-cp39-win_amd64.whl", hash = "sha256:77b355c8604fe285536155286b28b0c4cbc57cf81b08d8357bf34829ea982860"},
-    {file = "protobuf-4.21.6-py2.py3-none-any.whl", hash = "sha256:07a0bb9cc6114f16a39c866dc28b6e3d96fa4ffb9cc1033057412547e6e75cb9"},
-    {file = "protobuf-4.21.6-py3-none-any.whl", hash = "sha256:c7c864148a237f058c739ae7a05a2b403c0dfa4ce7d1f3e5213f352ad52d57c6"},
-    {file = "protobuf-4.21.6.tar.gz", hash = "sha256:6b1040a5661cd5f6e610cbca9cfaa2a17d60e2bb545309bc1b278bb05be44bdd"},
+    {file = "protobuf-4.21.7-cp310-abi3-win32.whl", hash = "sha256:c7cb105d69a87416bd9023e64324e1c089593e6dae64d2536f06bcbe49cd97d8"},
+    {file = "protobuf-4.21.7-cp310-abi3-win_amd64.whl", hash = "sha256:3ec85328a35a16463c6f419dbce3c0fc42b3e904d966f17f48bae39597c7a543"},
+    {file = "protobuf-4.21.7-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:db9056b6a11cb5131036d734bcbf91ef3ef9235d6b681b2fc431cbfe5a7f2e56"},
+    {file = "protobuf-4.21.7-cp37-abi3-manylinux2014_aarch64.whl", hash = "sha256:ca200645d6235ce0df3ccfdff1567acbab35c4db222a97357806e015f85b5744"},
+    {file = "protobuf-4.21.7-cp37-abi3-manylinux2014_x86_64.whl", hash = "sha256:b019c79e23a80735cc8a71b95f76a49a262f579d6b84fd20a0b82279f40e2cc1"},
+    {file = "protobuf-4.21.7-cp37-cp37m-win32.whl", hash = "sha256:d3f89ccf7182293feba2de2739c8bf34fed1ed7c65a5cf987be00311acac57c1"},
+    {file = "protobuf-4.21.7-cp37-cp37m-win_amd64.whl", hash = "sha256:a74d96cd960b87b4b712797c741bb3ea3a913f5c2dc4b6cbe9c0f8360b75297d"},
+    {file = "protobuf-4.21.7-cp38-cp38-win32.whl", hash = "sha256:8e09d1916386eca1ef1353767b6efcebc0a6859ed7f73cb7fb974feba3184830"},
+    {file = "protobuf-4.21.7-cp38-cp38-win_amd64.whl", hash = "sha256:9e355f2a839d9930d83971b9f562395e13493f0e9211520f8913bd11efa53c02"},
+    {file = "protobuf-4.21.7-cp39-cp39-win32.whl", hash = "sha256:f370c0a71712f8965023dd5b13277444d3cdfecc96b2c778b0e19acbfd60df6e"},
+    {file = "protobuf-4.21.7-cp39-cp39-win_amd64.whl", hash = "sha256:9643684232b6b340b5e63bb69c9b4904cdd39e4303d498d1a92abddc7e895b7f"},
+    {file = "protobuf-4.21.7-py2.py3-none-any.whl", hash = "sha256:8066322588d4b499869bf9f665ebe448e793036b552f68c585a9b28f1e393f66"},
+    {file = "protobuf-4.21.7-py3-none-any.whl", hash = "sha256:58b81358ec6c0b5d50df761460ae2db58405c063fd415e1101209221a0a810e1"},
+    {file = "protobuf-4.21.7.tar.gz", hash = "sha256:71d9dba03ed3432c878a801e2ea51e034b0ea01cf3a4344fb60166cb5f6c8757"},
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
@@ -1309,8 +1309,8 @@ python-dateutil = [
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
 pytz = [
-    {file = "pytz-2022.2.1-py2.py3-none-any.whl", hash = "sha256:220f481bdafa09c3955dfbdddb7b57780e9a94f5127e35456a48589b9e0c0197"},
-    {file = "pytz-2022.2.1.tar.gz", hash = "sha256:cea221417204f2d1a2aa03ddae3e867921971d0d76f14d87abb4414415bbdcf5"},
+    {file = "pytz-2022.4-py2.py3-none-any.whl", hash = "sha256:2c0784747071402c6e99f0bafdb7da0fa22645f06554c7ae06bf6358897e9c91"},
+    {file = "pytz-2022.4.tar.gz", hash = "sha256:48ce799d83b6f8aab2020e369b627446696619e79645419610b9facd909b3174"},
 ]
 PyYAML = [
     {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},
@@ -1367,8 +1367,8 @@ rsa = [
     {file = "rsa-4.9.tar.gz", hash = "sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21"},
 ]
 setuptools = [
-    {file = "setuptools-65.4.0-py3-none-any.whl", hash = "sha256:c2d2709550f15aab6c9110196ea312f468f41cd546bceb24127a1be6fdcaeeb1"},
-    {file = "setuptools-65.4.0.tar.gz", hash = "sha256:a8f6e213b4b0661f590ccf40de95d28a177cd747d098624ad3f69c40287297e9"},
+    {file = "setuptools-65.4.1-py3-none-any.whl", hash = "sha256:1b6bdc6161661409c5f21508763dc63ab20a9ac2f8ba20029aaaa7fdb9118012"},
+    {file = "setuptools-65.4.1.tar.gz", hash = "sha256:3050e338e5871e70c72983072fe34f6032ae1cdeeeb67338199c2f74e083a80e"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
