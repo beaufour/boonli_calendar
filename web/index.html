@@ -106,6 +106,7 @@
             var spinner = document.getElementById("spinner")
             var output = document.getElementById("output");
 
+            output.style.display = "none";
             spinner.style.display = "block";
             url.searchParams.set("fmt", "json");
             fetch(url).then(handleErrors)
