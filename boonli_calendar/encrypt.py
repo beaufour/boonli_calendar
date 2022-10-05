@@ -7,10 +7,8 @@ import functions_framework
 from flask import jsonify
 from flask.wrappers import Request, Response
 
+from boonli_calendar.common import WEB_DOMAIN
 from boonli_calendar.crypto import encrypt_symmetric
-
-# The domain the web site is hosted on
-WEB_DOMAIN = "https://boonli.vovhund.com"
 
 
 @functions_framework.http
