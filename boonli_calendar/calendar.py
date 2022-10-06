@@ -11,11 +11,12 @@ from dateutil.relativedelta import MO, relativedelta
 from flask import jsonify
 from flask.wrappers import Request, Response
 
-from boonli_calendar.common import WEB_DOMAIN
+from boonli_calendar.common import add_cors_headers
 from boonli_calendar.crypto import decrypt_symmetric
 
 
 @functions_framework.http
+@add_cors_headers(["GET", "POST"])
 def calendar(request: Request) -> Response:
     """Returns three weeks worth of menus in iCalendar format (last, current,
     and next week)
@@ -35,15 +36,10 @@ def calendar(request: Request) -> Response:
     > from base64 import b64encode; b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
     """
 
-    headers = {
-        "Access-Control-Allow-Origin": WEB_DOMAIN,
-        "Access-Control-Allow-Methods": "GET",
-    }
-
     # CORS Pre-flight handling
     if request.method == "OPTIONS":
         # Cache for 1 hour
-        headers["Access-Control-Max-Age"] = "3600"
+        headers = {"Access-Control-Max-Age": "3600"}
         return Response("", status=204, headers=headers)
 
     id = request.args.get("id")
@@ -65,15 +61,15 @@ def calendar(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not args.get(key):
-            return Response(f"Missing a required parameter: {key}", status=500, headers=headers)
+            return Response(f"Missing a required parameter: {key}", status=500)
 
     api = BoonliAPI()
     try:
         api.login(args["customer_id"], args["username"], args["password"])
     except LoginError as ex:
-        return Response(f"Could not login to Boonli API: {ex}", status=500, headers=headers)
+        return Response(f"Could not login to Boonli API: {ex}", status=500)
     except Exception as ex:
-        return Response(f"Error logging in to Boonli API: {ex}", status=500, headers=headers)
+        return Response(f"Error logging in to Boonli API: {ex}", status=500)
 
     day = date.today()
     sequence_num = day.toordinal()
@@ -86,13 +82,11 @@ def calendar(request: Request) -> Response:
     try:
         menus = api.get_range(day, 21)
     except Exception as ex:
-        return Response(f"Could not get menus from Boonli API: {ex}", status=500, headers=headers)
+        return Response(f"Could not get menus from Boonli API: {ex}", status=500)
 
     if request.args.get("fmt") == "json":
         data = [{"day": menu["day"].isoformat(), "menu": menu["menu"]} for menu in menus]
-        response = jsonify(data)
-        response.headers.extend(headers)
-        return response
+        return jsonify(data)
 
     # we set the sequence number to the current day as a hack, because being
     # stateless we don't know if anything has changed. That way it
@@ -100,5 +94,4 @@ def calendar(request: Request) -> Response:
     ical = menus_to_ical(menus, "beaufour.dk", sequence_num=sequence_num)
 
     response = Response(ical, headers={"Content-Type": "text/calendar"})
-    response.headers.extend(headers)
     return response
