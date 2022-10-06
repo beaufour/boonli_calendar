@@ -1,8 +1,16 @@
 # Boonli Calendar
 
-This project uses the [Boonli API](https://github.com/beaufour/boonli_api) to expose a URL that returns the Boonli menu chosen as an iCalendar. You can subscribe to this calendar in your calendar app (Google Calendar, Apple Calendar, etc)
+This project allows you to see the food you have chosen in [Boonli](https://boonli.com/) in your Calendar app (like Google Calendar, Apple Calender, Outlook etc). That way you can easily see what is served for lunch each day.
 
-The project is deployed here: <https://boonli.vovhund.com/>
+Try it out for yourself here: <https://boonli.vovhund.com/>
+
+## Motivation
+
+Why did I do this? It was a fun little project that allowed me to poke a bit at both Terraform and Google Cloud functions. As a bonus I can easily see what my daughter is eating each day at school :)
+
+## Behind the Scenes
+
+The project uses the [Boonli API](https://github.com/beaufour/boonli_api) (which really is just doing web scraping) to expose a URL that returns three weeks of menu data in iCalendar format. Boonli doesn't have an API, so we have to use your username and password directly. So to keep some modicum of security, we encrypt the login details so that it's not exposed directly in the URL itself at least. The shared secret is only stored in Google Cloud KMS.
 
 ## Deploying
 

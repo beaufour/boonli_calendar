@@ -18,7 +18,7 @@
 
         <main>
             <p class="fs-5 col-md-8">
-                Enter your login details to Boonli below here to generate a URL for your iCalendar.
+                Enter your login details to Boonli below here to generate a URL for your calendar.
             </p>
 
             <p class="fs-5 col-md-8">
@@ -29,11 +29,21 @@
             <form class="fs-5 col-md-8 needs-validation" onsubmit="handleSubmit(event, this)">
                 <div class="mb-3">
                     <label for="inputCustomerId" class="form-label">Customer ID</label>
-                    <input class="form-control" id="inputCustomerId" name="customer_id" required>
+                    <input class="form-control" id="inputCustomerId" name="customer_id" required
+                        aria-describedby="customerIdHelpBlock">
+                    <div id="customerIdHelpBlock" class="form-text">
+                        This is the first part of the URL where you log in to Boonli. Like if you use
+                        <b>https://lunar.boonli.com/</b> to log in, you should fill in
+                        <b>lunar</b> here.
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" name="username" required>
+                    <label for="inputEmail" class="form-label">Username</label>
+                    <input type="email" class="form-control" id="inputEmail" name="username" required
+                        aria-describedby="emailIdHelpBlock">
+                    <div id="emailIdHelpBlock" class="form-text">
+                        This is usually your email address.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="inputPassword" class="form-label">Password</label>
@@ -48,6 +58,13 @@
             <div class="fs-5 col-md-8 mt-5">
                 Calendar URL:
                 <input id="calendarUrl" type="text" class="form-control" readonly="true" />
+            </div>
+
+            <div class="fs-5 col-md-8 mt-5">
+                Take the above URL and subscribe to it in your preferred calendar application. In Google
+                Calendar it's under <i>Other Calendars, +, From URL</i>. In Apple Calendar it's under <i>File, New
+                    Calendar
+                    Subscription</i>.
             </div>
 
             <div class="fs-5 col-md-8 mt-5">
