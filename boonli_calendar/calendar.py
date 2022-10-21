@@ -1,5 +1,6 @@
 """This is the calendar API endpoint."""
 
+import logging
 from base64 import b64decode
 from datetime import date, timedelta
 from urllib.parse import parse_qs
@@ -11,8 +12,10 @@ from dateutil.relativedelta import MO, relativedelta
 from flask import jsonify
 from flask.wrappers import Request, Response
 
-from boonli_calendar.common import add_cors_headers
+from boonli_calendar.common import add_cors_headers, init_logging
 from boonli_calendar.crypto import decrypt_symmetric
+
+init_logging()
 
 
 @functions_framework.http
@@ -67,8 +70,10 @@ def calendar(request: Request) -> Response:
     try:
         api.login(args["customer_id"], args["username"], args["password"])
     except LoginError as ex:
+        logging.error(f"Boonli Login Error: {ex}", exc_info=ex)
         return Response(f"Could not login to Boonli API: {ex}", status=500)
     except Exception as ex:
+        logging.error(f"Boonli General Exception: {ex}", exc_info=ex)
         return Response(f"Error logging in to Boonli API: {ex}", status=500)
 
     day = date.today()
@@ -82,6 +87,7 @@ def calendar(request: Request) -> Response:
     try:
         menus = api.get_range(day, 21)
     except Exception as ex:
+        logging.error(f"Boonli exception getting menus: {ex}", exc_info=ex)
         return Response(f"Could not get menus from Boonli API: {ex}", status=500)
 
     if request.args.get("fmt") == "json":

@@ -1,5 +1,6 @@
 """This is the encrypt API endpoint."""
 
+import logging
 from base64 import b64encode
 from urllib.parse import urlencode
 
@@ -7,8 +8,17 @@ import functions_framework
 from flask import jsonify
 from flask.wrappers import Request, Response
 
-from boonli_calendar.common import add_cors_headers
+from boonli_calendar.common import add_cors_headers, init_logging
 from boonli_calendar.crypto import encrypt_symmetric
+
+init_logging()
+
+
+def _create_error(message: str) -> Response:
+    data = {"error": {"message": message}}
+    response = jsonify(data)
+    response.status_code = 500
+    return response
 
 
 @functions_framework.http
@@ -33,13 +43,16 @@ def encrypt(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not data.get(key):
-            data = {"error": {"message": f"Missing a required parameter: {key}"}}
-            response = jsonify(data)
-            response.status_code = 500
-            return response
+            logging.error(f"Missing a required parameter: {key}")
+            return _create_error(f"Missing a required parameter: {key}")
 
     url_string = urlencode(data)
-    encrypted = encrypt_symmetric(url_string)
+    try:
+        encrypted = encrypt_symmetric(url_string)
+    except Exception as ex:
+        logging.error(f"Encryption error: {ex}", exc_info=ex)
+        return _create_error(f"Encryption error: {ex}")
+
     ret = {"eid": b64encode(encrypted).decode("ascii")}
 
     return jsonify(ret)

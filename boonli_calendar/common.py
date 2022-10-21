@@ -1,4 +1,6 @@
 import functools
+import logging
+import os
 from typing import Callable, List
 
 from flask.wrappers import Response
@@ -31,3 +33,8 @@ def add_cors_headers(
         return wrapper
 
     return actual_decorator
+
+
+def init_logging() -> None:
+    level = os.environ.get("LOG_LEVEL", "INFO").upper()
+    logging.basicConfig(level=level)
