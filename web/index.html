@@ -100,12 +100,22 @@
 
     </div>
 
+    <script src="https://browser.sentry-cdn.com/7.16.0/bundle.tracing.min.js"
+        integrity="sha384-wXU9CL14HxNQidSEdsPNgsvTyYYWogbqur94ac59B5M+zWrBqgC7NRLzv1AHdz0j"
+        crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
         crossorigin="anonymous"></script>
 
     <script type="text/javascript">
         "use strict";
+
+        Sentry.init({
+            dsn: "https://a9f806daa30041ae8018aea37c41a48e@o1366758.ingest.sentry.io/4504023579295744",
+            integrations: [new Sentry.BrowserTracing()],
+            tracesSampleRate: 1.0,
+        });
 
         var api_location = new URL(location.href);
         if (!location.href.startsWith("http://localhost")) {
