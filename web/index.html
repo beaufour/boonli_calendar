@@ -36,7 +36,7 @@
                 our servers. The encryption key is stored securely in Google Cloud.
             </p>
 
-            <form class="fs-5 col-md-8 needs-validation" onsubmit="handleSubmit(event, this)">
+            <form class="fs-5 col-md-8 needs-validation" @submit="handleSubmit">
                 <div class="mb-3">
                     <label for="inputCustomerId" class="form-label">Customer ID</label>
                     <input class="form-control" id="inputCustomerId" name="customer_id" required
@@ -62,8 +62,7 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
 
-            <div id="alert" class="alert alert-danger" style="margin-top: 25px; display: none" role="alert">
-            </div>
+            <div v-if="alert" class="alert alert-danger" style="margin-top: 25px;" role="alert"> {{ alert }}</div>
 
             <div class="fs-5 col-md-8 mt-5">
                 Calendar URL:
@@ -84,12 +83,12 @@
             </div>
 
             <div class="fs-5 col-md-8 mt-5">
-                <div id="spinner" style="display: none">
+                <div v-if="loading">
                     Loading calendar data
                     <div id="spinner" class="spinner-border text-info" role="status">
                     </div>
                 </div>
-                <pre id="output" style="display: none"></pre>
+                <pre v-if="output">{{ output }}</pre>
             </div>
         </main>
 
@@ -108,30 +107,14 @@
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
         crossorigin="anonymous"></script>
 
-    <script type="text/javascript">
+    <script type="module">
         "use strict";
 
-        Sentry.init({
-            dsn: "https://a9f806daa30041ae8018aea37c41a48e@o1366758.ingest.sentry.io/4504023579295744",
-            integrations: [new Sentry.BrowserTracing()],
-            tracesSampleRate: 1.0,
-        });
+        import { createApp } from 'https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js'
 
         var api_location = new URL(location.href);
         if (!location.href.startsWith("http://localhost")) {
             api_location.host = "api." + api_location.host;
-        }
-
-        function clear_alert() {
-            var elem = document.getElementById("alert");
-            elem.style.display = "none";
-        }
-
-        function display_alert(message) {
-            console.error("Alert:", message);
-            var elem = document.getElementById("alert");
-            elem.style.display = "block";
-            elem.textContent = message
         }
 
         async function handleErrors(response) {
@@ -141,62 +124,79 @@
             return response;
         }
 
-        function showCalendar(url) {
-            var spinner = document.getElementById("spinner")
-            var output = document.getElementById("output");
+        createApp({
+            alert: "",
+            setAlert: function (message) {
+                if (message) {
+                    console.error("Alert:", message);
+                }
+                this.alert = message;
+            },
+            loading: false,
+            output: "",
 
-            output.style.display = "none";
-            spinner.style.display = "block";
-            url.searchParams.set("fmt", "json");
-            fetch(url).then(handleErrors)
-                .then((response) => response.json())
-                .then((data => {
-                    var text = "";
-                    for (const menu of data) {
-                        text += menu["day"] + " " + menu["menu"] + "\n";
-                    }
-                    output.textContent = text;
-                    output.style.display = "block";
-                    spinner.style.display = "none";
-                })).catch((error) => {
-                    output.textContent = error;
-                    output.style.display = "block";
-                    spinner.style.display = "none";
-                    console.error("error showing calendar:", error);
-                });
-        }
+            showCalendar: function (url) {
+                this.loading = true;
+                this.output = "";
 
-        function handleSubmit(event, form) {
-            event.preventDefault();
+                url.searchParams.set("fmt", "json");
+                fetch(url).then(handleErrors)
+                    .then((response) => response.json())
+                    .then((data => {
+                        var text = "";
+                        for (const menu of data) {
+                            text += menu["day"] + " " + menu["menu"] + "\n";
+                        }
+                        this.output = text;
+                        this.loading = false;
+                    })).catch((error) => {
+                        this.output = error.toString();
+                        this.loading = false;
+                        console.error("error showing calendar:", error);
+                    });
+            },
 
-            var input = document.getElementById("calendarUrl");
-            input.value = "";
+            handleSubmit: function (event) {
+                event.preventDefault();
 
-            var data = new FormData(form);
-            fetch(new URL("/encrypt/", api_location), { method: "post", body: data }).then((response) => response.json())
-                .then((data) => {
-                    if ("error" in data) {
-                        display_alert(data["error"]["message"]);
-                        return;
-                    }
+                var input = document.getElementById("calendarUrl");
+                input.value = "";
+                this.output = "";
+                this.setAlert("");
 
-                    clear_alert();
-                    var eid = data["eid"];
-                    var url = new URL("/calendar/", api_location);
-                    url.search = new URLSearchParams(
-                        { eid: data["eid"] }
-                    )
+                var data = new FormData(event.target);
+                fetch(new URL("/encrypt/", api_location), { method: "post", body: data }).then((response) => response.json())
+                    .then((data) => {
+                        if ("error" in data) {
+                            this.setAlert(data["error"]["message"]);
+                            return;
+                        }
 
-                    input.value = url.toString();
-                    input.focus()
-                    input.select();
+                        var eid = data["eid"];
+                        var url = new URL("/calendar/", api_location);
+                        url.search = new URLSearchParams(
+                            { eid: data["eid"] }
+                        )
 
-                    showCalendar(url);
-                })
-                .catch((error) => {
-                    display_alert("Error on API call: " + error);
-                });
-        }
+                        input.value = url.toString();
+                        input.focus()
+                        input.select();
+
+                        this.showCalendar(url);
+                    })
+                    .catch((error) => {
+                        this.setAlert("Error on API call: " + error);
+                    });
+            },
+        }).mount()
+    </script>
+
+    <script type="text/javascript">
+        Sentry.init({
+            dsn: "https://a9f806daa30041ae8018aea37c41a48e@o1366758.ingest.sentry.io/4504023579295744",
+            integrations: [new Sentry.BrowserTracing()],
+            tracesSampleRate: 1.0,
+        });
     </script>
 </body>
 
