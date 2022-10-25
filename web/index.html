@@ -42,7 +42,7 @@
                 our servers. The encryption key is stored securely in Google Cloud.
             </p>
 
-            <form class="fs-5 col-md-8 needs-validation" @submit="handleSubmit">
+            <form class="fs-5 col-md-8 needs-validation" @submit.prevent="handleSubmit">
                 <div class="mb-3">
                     <label for="inputCustomerId" class="form-label">Customer ID</label>
                     <input class="form-control" id="inputCustomerId" name="customer_id" required
@@ -73,7 +73,7 @@
 
             <div class="fs-5 col-md-8 mt-5">
                 Calendar URL:
-                <input id="calendarUrl" type="text" class="form-control" readonly="true" />
+                <input v-model="calendarUrl" id="calendarUrl" type="text" class="form-control" readonly="true" />
             </div>
 
             <div class="fs-5 col-md-8 mt-5">
@@ -141,6 +141,7 @@
             },
             loading: false,
             output: "",
+            calendarUrl: "",
 
             showCalendar: function (url) {
                 this.loading = true;
@@ -164,10 +165,7 @@
             },
 
             handleSubmit: function (event) {
-                event.preventDefault();
-
-                var input = document.getElementById("calendarUrl");
-                input.value = "";
+                this.calendarUrl = "";
                 this.output = "";
                 this.setAlert("");
 
@@ -185,7 +183,8 @@
                             { eid: data["eid"] }
                         )
 
-                        input.value = url.toString();
+                        this.calendarUrl = url.toString();
+                        var input = document.getElementById("calendarUrl");
                         input.focus()
                         input.select();
 
