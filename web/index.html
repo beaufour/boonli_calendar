@@ -16,6 +16,12 @@
     <title>Boonli Calendar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -62,7 +68,8 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
 
-            <div v-if="alert" class="alert alert-danger" style="margin-top: 25px;" role="alert"> {{ alert }}</div>
+            <div v-cloak v-if="alert" class="alert alert-danger" style="margin-top: 25px;" role="alert"> {{ alert }}
+            </div>
 
             <div class="fs-5 col-md-8 mt-5">
                 Calendar URL:
@@ -83,12 +90,12 @@
             </div>
 
             <div class="fs-5 col-md-8 mt-5">
-                <div v-if="loading">
+                <div v-cloak v-if="loading">
                     Loading calendar data
                     <div id="spinner" class="spinner-border text-info" role="status">
                     </div>
                 </div>
-                <pre v-if="output">{{ output }}</pre>
+                <pre v-cloak v-if="output">{{ output }}</pre>
             </div>
         </main>
 
