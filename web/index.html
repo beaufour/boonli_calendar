@@ -31,7 +31,7 @@
             <span class="fs-4">Boonli Calendar</span>
         </header>
 
-        <main>
+        <main id="app" @vue:mounted="setup()">
             <p class="fs-5 col-md-8 mb-3">
                 Enter your login details to Boonli below here to generate a URL for your calendar.
                 Since Boonli does not have an API, we sadly need your password. We will not store your login information
@@ -43,8 +43,8 @@
                 <div class="form-group row mb-3">
                     <label for="inputCustomerId" class="col-md-3 col-form-label">Customer ID</label>
                     <div class="col-md-9">
-                        <input class="form-control" id="inputCustomerId" name="customer_id" required
-                            aria-describedby="customerIdHelpBlock">
+                        <input v-model="customerId" class="form-control" id="inputCustomerId" name="customer_id"
+                            required aria-describedby="customerIdHelpBlock">
                         <div id="customerIdHelpBlock" class="form-text">
                             This is the first part of the URL where you log in to Boonli. Like if you use
                             <b>https://lunar.boonli.com/</b> to log in, you should fill in
@@ -139,6 +139,11 @@
             loading: false,
             output: "",
             calendarUrl: "",
+            customerId: "",
+
+            setup: function () {
+                this.customerId = new URL(document.URL).searchParams.get("customerId");
+            },
 
             showCalendar: function (url) {
                 // Shows the calendar data for the given credentials
@@ -217,7 +222,7 @@
                         this.setAlert("Error on API call: " + error);
                     });
             },
-        }).mount()
+        }).mount("#app")
     </script>
 
     <script type="text/javascript">
