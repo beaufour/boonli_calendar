@@ -36,26 +36,27 @@ resource "google_compute_target_https_proxy" "website" {
 
 #######################################
 # Load balancer HTTP -> HTTPS
-resource "google_compute_target_http_proxy" "website_http_redirect" {
-  name    = "${var.project_name}-website-https-redirect-proxy"
-  url_map = google_compute_url_map.website_http_redirect.id
-}
+# Disabled as it costs...
+# resource "google_compute_target_http_proxy" "website_http_redirect" {
+#   name    = "${var.project_name}-website-https-redirect-proxy"
+#   url_map = google_compute_url_map.website_http_redirect.id
+# }
 
-resource "google_compute_url_map" "website_http_redirect" {
-  name = "${var.project_name}-website-https-redirect-url-map"
-  default_url_redirect {
-    https_redirect = true
-    strip_query    = false
-  }
-}
+# resource "google_compute_url_map" "website_http_redirect" {
+#   name = "${var.project_name}-website-https-redirect-url-map"
+#   default_url_redirect {
+#     https_redirect = true
+#     strip_query    = false
+#   }
+# }
 
-resource "google_compute_global_forwarding_rule" "website_http_redirect" {
-  name                  = "${var.project_name}-website-http-forwarding-rule"
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  ip_address            = google_compute_global_address.website.id
-  target                = google_compute_target_http_proxy.website_http_redirect.id
-  port_range            = "80"
-}
+# resource "google_compute_global_forwarding_rule" "website_http_redirect" {
+#   name                  = "${var.project_name}-website-http-forwarding-rule"
+#   load_balancing_scheme = "EXTERNAL_MANAGED"
+#   ip_address            = google_compute_global_address.website.id
+#   target                = google_compute_target_http_proxy.website_http_redirect.id
+#   port_range            = "80"
+# }
 
 
 #######################################
