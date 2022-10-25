@@ -34,9 +34,6 @@
         <main>
             <p class="fs-5 col-md-8">
                 Enter your login details to Boonli below here to generate a URL for your calendar.
-            </p>
-
-            <p class="fs-5 col-md-8">
                 Since Boonli does not have an API, we sadly need your password. We will not store your login information
                 anywhere! We wil encrypt your login information directly in the URL, so it will not be stored on any of
                 our servers. The encryption key is stored securely in Google Cloud.
@@ -71,7 +68,7 @@
             <div v-cloak v-if="alert" class="alert alert-danger" style="margin-top: 25px;" role="alert"> {{ alert }}
             </div>
 
-            <div class="fs-5 col-md-8 mt-5">
+            <div class="fs-5 col-md-8 mt-3">
                 Calendar URL:
                 <input v-model="calendarUrl" id="calendarUrl" type="text" class="form-control" readonly="true" />
             </div>
@@ -81,12 +78,6 @@
                 Calendar it's under <i>Other Calendars, +, From URL</i>. In Apple Calendar it's under <i>File, New
                     Calendar
                     Subscription</i>.
-            </div>
-
-            <div class="fs-5 col-md-8 mt-5">
-                Note that Google Calendar has some kind of bug where it won't let you add the url. I'm unsure about
-                why, but if you shorten the url through a url shortener like <a href="http://bitly.com/">Bitly</a>
-                it'll work.
             </div>
 
             <div class="fs-5 col-md-8 mt-5">
@@ -144,9 +135,12 @@
             calendarUrl: "",
 
             showCalendar: function (url) {
+                // Shows the calendar data for the given credentials
+
                 this.loading = true;
                 this.output = "";
 
+                var orig_url = url.toString();
                 url.searchParams.set("fmt", "json");
                 fetch(url).then(handleErrors)
                     .then((response) => response.json())
@@ -157,6 +151,7 @@
                         }
                         this.output = text;
                         this.loading = false;
+                        this.shortenUrl(orig_url);
                     })).catch((error) => {
                         this.output = error.toString();
                         this.loading = false;
@@ -164,13 +159,40 @@
                     });
             },
 
+            shortenUrl: function (url) {
+                // Shorten the URL using TinyURL.
+                //
+                // We shorten the URL because otherwise we hit some weird
+                // Google Calendar bug when using the original URL.
+
+                const TINYURL_API = "https://api.tinyurl.com/create?api_token=ALNAP9e5UWzdneuOhiPYxpMDQw5CZZBg4RyQQX5q0NZqaEmBmlnpBBCxirKB";
+                fetch(TINYURL_API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: url }),
+                }).then(handleErrors)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.calendarUrl = data["data"]["tiny_url"];
+                        var input = document.getElementById("calendarUrl");
+                        input.focus()
+                        input.select();
+
+                    }).catch((error) => {
+                        this.setAlert("Error shortening URL: " + error);
+                    })
+            },
+
             handleSubmit: function (event) {
+                // Handle the form submit, calling encrypt first and then
+                // shortening the url and showing the calendar data.
+
                 this.calendarUrl = "";
                 this.output = "";
                 this.setAlert("");
 
                 var data = new FormData(event.target);
-                fetch(new URL("/encrypt/", api_location), { method: "post", body: data }).then((response) => response.json())
+                fetch(new URL("/encrypt/", api_location), { method: "POST", body: data }).then((response) => response.json())
                     .then((data) => {
                         if ("error" in data) {
                             this.setAlert(data["error"]["message"]);
@@ -182,11 +204,6 @@
                         url.search = new URLSearchParams(
                             { eid: data["eid"] }
                         )
-
-                        this.calendarUrl = url.toString();
-                        var input = document.getElementById("calendarUrl");
-                        input.focus()
-                        input.select();
 
                         this.showCalendar(url);
                     })
