@@ -1,97 +1,10 @@
 #
 # Setup for the API endpoints
 #
-# Note: here's also a 2nd gen Cloud Functions, but I've only had trouble with
+# Note: There's also a 2nd gen Cloud Functions, but I've only had trouble with
 # it. Either because it's fairly new or because Terraform doesn't handle it
 # well. Or both...
 #
-
-
-#######################################
-# Load Balancer
-resource "google_compute_global_address" "default" {
-  name = "${var.project_name}-ip"
-}
-
-resource "google_compute_region_network_endpoint_group" "default" {
-  name                  = "${var.project_name}-neg"
-  network_endpoint_type = "SERVERLESS"
-
-  cloud_function {
-    url_mask = "/<function>"
-  }
-  region = var.region
-}
-
-resource "google_compute_backend_service" "default" {
-  name                  = "${var.project_name}-backend"
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  backend {
-    group = google_compute_region_network_endpoint_group.default.id
-  }
-  log_config {
-    enable      = true
-    sample_rate = 1.0
-  }
-}
-
-resource "google_compute_url_map" "default" {
-  name            = "${var.project_name}-urlmap"
-  default_service = google_compute_backend_service.default.id
-}
-
-resource "google_compute_target_https_proxy" "default" {
-  name             = "${var.project_name}-https-proxy"
-  url_map          = google_compute_url_map.default.id
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
-}
-
-resource "google_compute_global_forwarding_rule" "default" {
-  name                  = "${var.project_name}-https-forwarding-rule"
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  ip_address            = google_compute_global_address.default.id
-  target                = google_compute_target_https_proxy.default.id
-  port_range            = "443"
-}
-
-
-#######################################
-# Load balancer HTTP -> HTTPS
-# Redirect as it costs...
-# resource "google_compute_target_http_proxy" "http_redirect" {
-#   name    = "${var.project_name}-https-redirect-proxy"
-#   url_map = google_compute_url_map.http_redirect.id
-# }
-
-# resource "google_compute_url_map" "http_redirect" {
-#   name = "${var.project_name}-https-redirect-url-map"
-#   default_url_redirect {
-#     https_redirect = true
-#     strip_query    = false
-#   }
-# }
-
-# resource "google_compute_global_forwarding_rule" "http_redirect" {
-#   name                  = "${var.project_name}-http-forwarding-rule"
-#   load_balancing_scheme = "EXTERNAL_MANAGED"
-#   ip_address            = google_compute_global_address.default.id
-#   target                = google_compute_target_http_proxy.http_redirect.id
-#   port_range            = "80"
-# }
-
-
-#######################################
-# DNS
-resource "google_dns_record_set" "default" {
-  name = local.api_domain_name
-  type = "A"
-  ttl  = 300
-
-  managed_zone = data.google_dns_managed_zone.dns_zone.name
-
-  rrdatas = [google_compute_global_address.default.address]
-}
-
 
 #######################################
 # KMS
