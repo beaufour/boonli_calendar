@@ -46,20 +46,20 @@ def calendar(request: Request) -> Response:
         headers = {"Access-Control-Max-Age": "3600"}
         return Response("", status=204, headers=headers)
 
-    id = request.args.get("id")
+    opt_id = request.args.get("id")
     eid = request.args.get("eid")
-    if eid or id:
+    if eid or opt_id:
         if eid:
             url_string = decrypt_symmetric(b64decode(eid))
         else:
             # Pylance is not smart enough to understand that id cannot be None here
-            id_: str = id  # type: ignore
+            id_: str = opt_id  # type: ignore
             url_string = b64decode(id_).decode("utf-8")
 
         args_list = parse_qs(url_string)
         args = {}
-        for arg in args_list.keys():
-            args[arg] = args_list[arg][0]
+        for arg, value in args_list.items():
+            args[arg] = value[0]
     else:
         args = request.args
 
