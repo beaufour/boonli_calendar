@@ -43,14 +43,14 @@ def encrypt(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not data.get(key):
-            logging.error(f"Missing a required parameter: {key}")
+            logging.error("Missing a required parameter: %s", key)
             return _create_error(f"Missing a required parameter: {key}")
 
     url_string = urlencode(data)
     try:
         encrypted = encrypt_symmetric(url_string)
     except Exception as ex:
-        logging.error(f"Encryption error: {ex}", exc_info=ex)
+        logging.error("Encryption error: %s", ex, exc_info=ex)
         return _create_error(f"Encryption error: {ex}")
 
     ret = {"eid": b64encode(encrypted).decode("ascii")}

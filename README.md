@@ -1,5 +1,7 @@
 # Boonli Calendar
 
+[![pre-commit](https://github.com/beaufour/boonli_calendar/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/beaufour/boonli_calendar/actions/workflows/pre-commit.yml)
+
 This project allows you to see the food you have chosen in [Boonli](https://boonli.com/) in your Calendar app (like Google Calendar, Apple Calender, Outlook etc). That way you can easily see what is served for lunch each day.
 
 Try it out for yourself here: <https://boonli.vovhund.com/>
