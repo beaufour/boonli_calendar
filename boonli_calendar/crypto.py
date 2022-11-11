@@ -1,7 +1,7 @@
-# Encryption and decryption tools using Google Cloud KMS
-#
-# See: https://cloud.google.com/kms/docs/samples
+"""Encryption and decryption tools using Google Cloud KMS.
 
+See: https://cloud.google.com/kms/docs/samples
+"""
 import os
 from typing import Dict
 

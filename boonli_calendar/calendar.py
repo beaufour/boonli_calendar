@@ -36,7 +36,8 @@ def calendar(request: Request) -> Response:
     Or see it in a query log.
 
     To create the id in Python:
-    > from base64 import b64encode; b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
+    > from base64 import b64encode
+    > b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
     """
 
     # CORS Pre-flight handling
@@ -70,10 +71,10 @@ def calendar(request: Request) -> Response:
     try:
         api.login(args["customer_id"], args["username"], args["password"])
     except LoginError as ex:
-        logging.error(f"Boonli Login Error: {ex}", exc_info=ex)
+        logging.error("Boonli Login Error: %s", ex, exc_info=ex)
         return Response(f"Could not login to Boonli API: {ex}", status=500)
     except Exception as ex:
-        logging.error(f"Boonli General Exception: {ex}", exc_info=ex)
+        logging.error("Boonli General Exception: %s", ex, exc_info=ex)
         return Response(f"Error logging in to Boonli API: {ex}", status=500)
 
     day = date.today()
@@ -87,7 +88,7 @@ def calendar(request: Request) -> Response:
     try:
         menus = api.get_range(day, 21)
     except Exception as ex:
-        logging.error(f"Boonli exception getting menus: {ex}", exc_info=ex)
+        logging.error("Boonli exception getting menus: %s", ex, exc_info=ex)
         return Response(f"Could not get menus from Boonli API: {ex}", status=500)
 
     if request.args.get("fmt") == "json":

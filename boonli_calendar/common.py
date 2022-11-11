@@ -1,3 +1,4 @@
+"""Common functionality shared across the app."""
 import functools
 import logging
 import os
@@ -36,5 +37,6 @@ def add_cors_headers(
 
 
 def init_logging() -> None:
+    """Initializes the logging system."""
     level = os.environ.get("LOG_LEVEL", "INFO").upper()
     logging.basicConfig(level=level)
