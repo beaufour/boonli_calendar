@@ -17,7 +17,7 @@ functions-framework = "^3.2.0"
 boonli-api = "^0.1.1"
 typing-extensions = "~4.3.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^5.2"
 flake8 = "^4.0.1"
 black = "^22.8.0"
