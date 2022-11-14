@@ -14,7 +14,7 @@ crcmod = "^1.7"
 six = "^1.16.0"
 google-cloud-kms = "^2.12.1"
 functions-framework = "^3.2.0"
-boonli-api = "^0.1.1"
+boonli-api = "^0.1.2"
 typing-extensions = "~4.3.0"
 
 [tool.poetry.group.dev.dependencies]

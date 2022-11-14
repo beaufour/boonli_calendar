@@ -52,7 +52,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boonli-api"
-version = "0.1.1"
+version = "0.1.2"
 description = "API allowing you to fecth menus from boonli.com"
 category = "main"
 optional = false
@@ -867,7 +867,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "371aacad4a09cabeed2a39dac466ce069bee0bf58c1502bcf9b8e175b6728bd1"
+content-hash = "dc58a348af1b2ccaf5fc1c1d11c5ffab824f0dd8d3c0e2eb68c4a97b64aa4724"
 
 [metadata.files]
 attrs = [
@@ -893,8 +893,8 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boonli-api = [
-    {file = "boonli-api-0.1.1.tar.gz", hash = "sha256:b887fcf2017a297344d356bd6a55f973c3b363277ff1a2f81cab11602cccb8ba"},
-    {file = "boonli_api-0.1.1-py3-none-any.whl", hash = "sha256:a3922671981dc1bfcf34aa9480799dac34287b9bb39cac0950c1b16d817617b1"},
+    {file = "boonli_api-0.1.2-py3-none-any.whl", hash = "sha256:110b97515ede446fc4710cce9eaca55053e03b14582501dd7e4aa7cdb6d97af5"},
+    {file = "boonli_api-0.1.2.tar.gz", hash = "sha256:edf03552dedb8b3010b6ecc7a835276ed0c9846b8ed28ab7f2dac713fe3db792"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
