@@ -65,14 +65,14 @@ def calendar(request: Request) -> Response:
 
     for key in ["username", "password", "customer_id"]:
         if not args.get(key):
-            return Response(f"Missing a required parameter: {key}", status=500)
+            return Response(f"Missing a required parameter: {key}", status=400)
 
     api = BoonliAPI()
     try:
         api.login(args["customer_id"], args["username"], args["password"])
     except LoginError as ex:
         logging.error("Boonli Login Error: %s", ex, exc_info=ex)
-        return Response(f"Could not login to Boonli API: {ex}", status=500)
+        return Response(f"Could not login to Boonli API: {ex}", status=401)
     except Exception as ex:
         logging.error("Boonli General Exception: %s", ex, exc_info=ex)
         return Response(f"Error logging in to Boonli API: {ex}", status=500)

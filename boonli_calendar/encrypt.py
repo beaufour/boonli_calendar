@@ -14,10 +14,10 @@ from boonli_calendar.crypto import encrypt_symmetric
 init_logging()
 
 
-def _create_error(message: str) -> Response:
+def _create_error(message: str, code: int = 500) -> Response:
     data = {"error": {"message": message}}
     response = jsonify(data)
-    response.status_code = 500
+    response.status_code = code
     return response
 
 
@@ -44,7 +44,7 @@ def encrypt(request: Request) -> Response:
     for key in ["username", "password", "customer_id"]:
         if not data.get(key):
             logging.error("Missing a required parameter: %s", key)
-            return _create_error(f"Missing a required parameter: {key}")
+            return _create_error(f"Missing a required parameter: {key}", 400)
 
     url_string = urlencode(data)
     try:
