@@ -86,7 +86,7 @@
                     Subscription</i>.
             </div>
 
-            <div class="fs-5 col-md-8 mt-5">
+            <div id="data" class="fs-5 col-md-8 mt-5">
                 <div v-cloak v-if="loading">
                     Loading calendar data
                     <div id="spinner" class="spinner-border text-info" role="status">
@@ -201,6 +201,8 @@
                 this.calendarUrl = "";
                 this.output = "";
                 this.setAlert("");
+
+                document.getElementById("data").scrollIntoView({ behavior: "smooth" });
 
                 var data = new FormData(event.target);
                 fetch(new URL("/encrypt/", api_location), { method: "POST", body: data }).then((response) => response.json())
