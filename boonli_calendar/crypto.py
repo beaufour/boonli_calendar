@@ -2,6 +2,7 @@
 
 See: https://cloud.google.com/kms/docs/samples
 """
+
 import os
 from typing import Dict
 

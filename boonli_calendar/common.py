@@ -1,4 +1,5 @@
 """Common functionality shared across the app."""
+
 import functools
 import logging
 import os
